@@ -6,16 +6,22 @@
 /*   By: yalshish <yalshish@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:34:37 by yalshish          #+#    #+#             */
-/*   Updated: 2024/09/22 11:27:40 by yalshish         ###   ########.fr       */
+/*   Updated: 2024/09/22 16:02:32 by yalshish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GET_NEXT_LINE_H
-#define GET_NEXT_LINE_H
+# define GET_NEXT_LINE_H
 
-#include <stdlib.h>
-#include <unistd.h>
+# ifndef BUFFER_SIZE
+#  define BUFFER_SIZE 42
+# endif
 
-char *get_next_line(int fd);
+# include <stdlib.h>
+# include <unistd.h>
+# include <fcntl.h>
+
+size_t	ft_strlen(const char *s);
+char	*get_next_line(int fd);
 
 #endif
