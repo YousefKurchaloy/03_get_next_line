@@ -6,7 +6,7 @@
 /*   By: yalshish <yalshish@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:33:29 by yalshish          #+#    #+#             */
-/*   Updated: 2024/09/22 16:13:58 by yalshish         ###   ########.fr       */
+/*   Updated: 2024/09/25 18:02:20 by yalshish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 char	*get_next_line(int fd)
 {
-	int		i;
-	char	*line;
+	static char	*line;
+	char		*buffer;
 
-	i = 0;
 
-	read(fd, line, BUFFER_SIZE);
-	return (line);
+	buffer = (char *)malloc(BUFFER_SIZE + 1);
+	if (!buffer)
+		return (NULL);
+
 }
 
 #include <stdio.h>
@@ -33,7 +34,6 @@ int	main(void)
 	fd = open("./test.txt", O_RDONLY);
 	line = get_next_line(fd);
 	printf("%s\n", line);
-	free(line);
 	close(fd);
 	return (0);
 }

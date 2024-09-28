@@ -6,7 +6,7 @@
 /*   By: yalshish <yalshish@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:34:37 by yalshish          #+#    #+#             */
-/*   Updated: 2024/09/22 16:02:32 by yalshish         ###   ########.fr       */
+/*   Updated: 2024/09/23 11:17:36 by yalshish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@
 # include <unistd.h>
 # include <fcntl.h>
 
-size_t	ft_strlen(const char *s);
+size_t	ft_strlen_till_nl(const char *s);
 char	*get_next_line(int fd);
 
 #endif
