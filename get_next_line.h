@@ -6,7 +6,7 @@
 /*   By: yalshish <yalshish@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:34:37 by yalshish          #+#    #+#             */
-/*   Updated: 2024/10/07 12:10:42 by yalshish         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:07:01 by yalshish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,8 @@
 
 # include <stdlib.h>
 # include <unistd.h>
-# include <fcntl.h>
+#include <fcntl.h>
+#include <stddef.h>
 
 size_t	ft_strlen(const char *s);
 char	*ft_strdup(const char *s1);

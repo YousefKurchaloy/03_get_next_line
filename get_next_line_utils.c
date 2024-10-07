@@ -6,20 +6,20 @@
 /*   By: yalshish <yalshish@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:34:24 by yalshish          #+#    #+#             */
-/*   Updated: 2024/09/30 20:49:09 by yalshish         ###   ########.fr       */
+/*   Updated: 2024/10/07 15:04:26 by yalshish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t	ft_strlen(const char *s)
+size_t	ft_strlen_nl(const char *s)
 {
 	size_t	i;
 
 	if (!s)
 		return (0);
 	i = 0;
-	while (s[i])
+	while (s[i] != '\0' && s[i] != '\n')
 		i++;
 	return (i);
 }
