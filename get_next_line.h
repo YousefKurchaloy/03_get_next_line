@@ -6,7 +6,7 @@
 /*   By: yalshish <yalshish@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:34:37 by yalshish          #+#    #+#             */
-/*   Updated: 2024/10/08 10:13:52 by yalshish         ###   ########.fr       */
+/*   Updated: 2024/10/08 18:29:49 by yalshish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,5 +23,6 @@
 #include <stddef.h>
 
 char	*get_next_line(int fd);
+char	*ft_strjoin(const char *s1, const char *s2);
 
 #endif
