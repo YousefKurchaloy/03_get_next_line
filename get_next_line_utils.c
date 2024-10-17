@@ -6,13 +6,13 @@
 /*   By: yalshish <yalshish@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:34:24 by yalshish          #+#    #+#             */
-/*   Updated: 2024/10/14 15:54:37 by yalshish         ###   ########.fr       */
+/*   Updated: 2024/10/14 15:58:40 by yalshish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-size_t ft_strlen(const char *s)
+size_t	ft_strlen(const char *s)
 {
 	int i;
 
@@ -22,7 +22,7 @@ size_t ft_strlen(const char *s)
 	return (i);
 }
 
-char *ft_strchr(const char *s, int c)
+char	*ft_strchr(const char *s, int c)
 {
 	size_t i;
 
@@ -38,13 +38,13 @@ char *ft_strchr(const char *s, int c)
 	return (NULL);
 }
 
-char *ft_strdup(const char *s1)
+char	*ft_strdup(const char *s1)
 {
 	char *dst;
 	size_t i;
 
 	i = ft_strlen(s1);
-	dst = (char *)malloc(sizeof(char) * (i + 1));
+	dst = malloc(sizeof(char) * (i + 1));
 	if (!dst)
 		return (NULL);
 	i = 0;
@@ -57,7 +57,7 @@ char *ft_strdup(const char *s1)
 	return (dst);
 }
 
-char *ft_strjoin(char *s1, const char *s2)
+char	*ft_strjoin(char *s1, const char *s2)
 {
 	char *str;
 	size_t i;
@@ -65,7 +65,7 @@ char *ft_strjoin(char *s1, const char *s2)
 
 	if (!s1 || !s2)
 		return (NULL);
-	str = (char *)malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
+	str = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
 	if (!str)
 		return (NULL);
 	i = 0;
@@ -86,7 +86,7 @@ char *ft_strjoin(char *s1, const char *s2)
 	return (str);
 }
 
-char *ft_substr(const char *s, unsigned int start, size_t len)
+char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
 	char *substr;
 	size_t len_s;
@@ -99,7 +99,7 @@ char *ft_substr(const char *s, unsigned int start, size_t len)
 		len = 0;
 	if (len > len_s - start)
 		len = len_s - start;
-	substr = (char *)malloc(len + 1);
+	substr = malloc(len + 1);
 	if (!substr)
 		return (NULL);
 	i = 0;

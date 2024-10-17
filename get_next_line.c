@@ -6,7 +6,7 @@
 /*   By: yalshish <yalshish@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/21 13:33:29 by yalshish          #+#    #+#             */
-/*   Updated: 2024/10/14 12:31:58 by yalshish         ###   ########.fr       */
+/*   Updated: 2024/10/14 19:54:26 by yalshish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,14 +61,15 @@ char *get_next_line(int fd)
 	return (ret_line);
 }
 
-// #include <stdio.h>
-// int main(void)
-// {
-// 	int fd;
+#include <stdio.h>
+int main(void)
+{
+	int fd;
 
-// 	fd = open("test01.txt", O_RDONLY);
+	fd = open("test01.txt", O_RDONLY);
 
-// 	printf("%s\n", get_next_line(fd));
-// 	printf("%d\n", fd);
-// 	return (0);
-// }
+	printf("1> %s", get_next_line(fd));
+	printf("2> %s", get_next_line(fd));
+	printf("3> %s", get_next_line(fd));
+	return (0);
+}
