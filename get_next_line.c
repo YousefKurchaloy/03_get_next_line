@@ -5,71 +5,110 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: yalshish <yalshish@student.42amman.com>    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/21 13:33:29 by yalshish          #+#    #+#             */
-/*   Updated: 2024/10/14 19:54:26 by yalshish         ###   ########.fr       */
+/*   Created: 2024/11/16 15:15:35 by yalshish          #+#    #+#             */
+/*   Updated: 2024/11/16 15:16:41 by yalshish         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
-char *get_joined_buffer(char *buffer, int fd)
-{
-	char temp[BUFFER_SIZE + 1];
-	long i;
 
-	i = -1;
-	while (++i <= BUFFER_SIZE)
-		temp[i] = '\0';
-	i = 1;
-	while (!ft_strchr(temp, '\n') && i)
+static char	*ft_line_allocation(int fd, char *str)
+{
+	char	*buff;
+	ssize_t	size;
+	char	*temp;
+
+	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buff)
+		return (NULL);
+	while (!ft_strchr(str, '\n'))
 	{
-		i = read(fd, temp, BUFFER_SIZE);
-		if (i < 0 || (!i && !buffer))
-			return (NULL);
-		temp[i] = '\0';
-		if (!buffer)
-			buffer = ft_strdup(temp);
-		else
-			buffer = ft_strjoin(buffer, temp);
-		if (!buffer)
-			return (NULL);
+		size = read(fd, buff, BUFFER_SIZE);
+		if (size == -1)
+			return (free(buff), free(str), NULL);
+		if (size == 0 && str[0] == '\0')
+			return (free(buff), free(str), NULL);
+		if (size == 0)
+			break ;
+		buff[size] = '\0';
+		temp = ft_strjoin(str, buff);
+		free(str);
+		str = temp;
 	}
-	return (buffer);
+	free(buff);
+	return (str);
 }
 
-char *get_next_line(int fd)
+static char	*ft_next_line(char *str)
 {
-	static char *buffer;
-	char *ret_line;
-	char *temp;
-	int i;
+	size_t	i;
+	char	*line;
 
-	if (fd < 0 || BUFFER_SIZE < 1)
+	i = 0;
+	if (!str)
 		return (NULL);
-	buffer = get_joined_buffer(buffer, fd);
-	if (!buffer)
+	while (str[i] && str[i] != '\n')
+		i++;
+	line = malloc(sizeof(char) * (i + 1 + !!str[i]));
+	if (!line)
 		return (NULL);
 	i = 0;
-	while (buffer[i] != '\n' && buffer[i])
-		++i;
-	if (buffer[i] == '\n')
-		++i;
-	ret_line = ft_substr(buffer, 0, i);
-	temp = ft_substr(buffer, i, ft_strlen(buffer) - i);
-	free(buffer);
-	buffer = temp;
-	return (ret_line);
+	while (str[i] && str[i] != '\n')
+	{
+		line[i] = str[i];
+		i++;
+	}
+	if (str[i] == '\n')
+	{
+		line[i] = '\n';
+		i++;
+	}
+	line[i] = '\0';
+	return (line);
 }
 
-#include <stdio.h>
-int main(void)
+static char	*ft_rem_line(char *str)
 {
-	int fd;
+	size_t	i;
+	size_t	j;
+	char	*new_str;
 
-	fd = open("test01.txt", O_RDONLY);
+	i = 0;
+	j = 0;
+	while (str[i] && str[i] != '\n')
+		i++;
+	if (!str[i])
+	{
+		free(str);
+		return (NULL);
+	}
+	new_str = malloc(sizeof(char) * (ft_strlen(str) - i));
+	if (!new_str)
+		return (NULL);
+	i++;
+	while (str[i])
+	{
+		new_str[j] = str[i];
+		i++;
+		j++;
+	}
+	new_str[j] = '\0';
+	return (free(str), new_str);
+}
 
-	printf("1> %s", get_next_line(fd));
-	printf("2> %s", get_next_line(fd));
-	printf("3> %s", get_next_line(fd));
-	return (0);
+char	*get_next_line(int fd)
+{
+	char		*line;
+	static char	*str;
+
+	if (BUFFER_SIZE <= 0 || fd < 0)
+		return (NULL);
+	if (!str)
+		str = ft_strdup("");
+	str = ft_line_allocation(fd, str);
+	if (!str)
+		return (NULL);
+	line = ft_next_line(str);
+	str = ft_rem_line(str);
+	return (line);
 }
