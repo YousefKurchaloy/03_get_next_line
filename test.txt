@@ -1,0 +1,13 @@
+buffersize=5
+
+hel
+
+he
+l'\n'
+
+my
+name
+is
+abood
+3all
+al7dood\0
