@@ -3,112 +3,100 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: yalshish <yalshish@student.42amman.com>    +#+  +:+       +#+        */
+/*   By: kurchaloy <kurchaloy@student.42.fr>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/16 15:15:35 by yalshish          #+#    #+#             */
-/*   Updated: 2024/11/16 15:16:41 by yalshish         ###   ########.fr       */
+/*   Updated: 2024/12/11 12:26:36 by kurchaloy        ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
 
-static char	*ft_line_allocation(int fd, char *str)
+void	*ft_free(char **str)
+// this function is used to free the memory allocated by reference
+// to the pointer passed as an argument and set the pointer to NULL
 {
-	char	*buff;
-	ssize_t	size;
-	char	*temp;
-
-	buff = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	if (!buff)
-		return (NULL);
-	while (!ft_strchr(str, '\n'))
-	{
-		size = read(fd, buff, BUFFER_SIZE);
-		if (size == -1)
-			return (free(buff), free(str), NULL);
-		if (size == 0 && str[0] == '\0')
-			return (free(buff), free(str), NULL);
-		if (size == 0)
-			break ;
-		buff[size] = '\0';
-		temp = ft_strjoin(str, buff);
-		free(str);
-		str = temp;
-	}
-	free(buff);
-	return (str);
+	free(*str);
+	*str = NULL;
+	return (NULL);
 }
 
-static char	*ft_next_line(char *str)
+char	*clean_storage(char *line)
 {
-	size_t	i;
-	char	*line;
+	char	*new_line;
+	char	*ptr;
+	int		len;
 
-	i = 0;
-	if (!str)
-		return (NULL);
-	while (str[i] && str[i] != '\n')
-		i++;
-	line = malloc(sizeof(char) * (i + 1 + !!str[i]));
-	if (!line)
-		return (NULL);
-	i = 0;
-	while (str[i] && str[i] != '\n')
+	ptr = ft_strchr(line, '\n');
+	if (!ptr)
 	{
-		line[i] = str[i];
-		i++;
+		new_line = NULL;
+		return (ft_free(&line));
 	}
-	if (str[i] == '\n')
+	else
+		len = (ptr - line) + 1;
+	if (!line[len])
+		return (ft_free(&line));
+	new_line = ft_substr(line, len, ft_strlen(line) - len);
+	ft_free(&line);
+	if (!new_line)
+		return (NULL);
+	return (new_line);
+}
+
+char	*new_buf(char *line)
+{
+	char	*buf;
+	char	*ptr;
+	int		len;
+
+	ptr = ft_strchr(line, '\n');
+	len = (ptr - line) + 1;
+	buf = ft_substr(line, 0, len);
+	if (!buf)
+		return (NULL);
+	return (buf);
+}
+
+char	*read_buffer(int fd, char *line)
+{
+	int		byte;
+	char	*buffer;
+
+	byte = 1;
+	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
+	if (!buffer)
+		return (ft_free(&line));
+	buffer[0] = '\0';
+	while (byte > 0 && !ft_strchr(buffer, '\n'))
 	{
-		line[i] = '\n';
-		i++;
+		byte = read (fd, buffer, BUFFER_SIZE);
+		if (byte > 0)
+		{
+			buffer[byte] = '\0';
+			line = ft_strjoin(line, buffer);
+		}
 	}
-	line[i] = '\0';
+	free(buffer);
+	if (byte == -1)
+		return (ft_free(&line));
 	return (line);
-}
-
-static char	*ft_rem_line(char *str)
-{
-	size_t	i;
-	size_t	j;
-	char	*new_str;
-
-	i = 0;
-	j = 0;
-	while (str[i] && str[i] != '\n')
-		i++;
-	if (!str[i])
-	{
-		free(str);
-		return (NULL);
-	}
-	new_str = malloc(sizeof(char) * (ft_strlen(str) - i));
-	if (!new_str)
-		return (NULL);
-	i++;
-	while (str[i])
-	{
-		new_str[j] = str[i];
-		i++;
-		j++;
-	}
-	new_str[j] = '\0';
-	return (free(str), new_str);
 }
 
 char	*get_next_line(int fd)
 {
-	char		*line;
-	static char	*str;
+	static char	*line = {NULL};
+	char		*buf;
 
-	if (BUFFER_SIZE <= 0 || fd < 0)
+	if (fd < 0)
 		return (NULL);
-	if (!str)
-		str = ft_strdup("");
-	str = ft_line_allocation(fd, str);
-	if (!str)
+	if ((line && !ft_strchr(line, '\n')) || !line)
+		line = read_buffer (fd, line);
+	if (!line)
 		return (NULL);
-	line = ft_next_line(str);
-	str = ft_rem_line(str);
-	return (line);
+	buf = new_buf(line);
+	if (!buf)
+		return (ft_free(&line));
+	line = clean_storage(line);
+	return (buf);
 }
